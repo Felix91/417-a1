@@ -1,0 +1,25 @@
+@CHARSET "ISO-8859-1";
+
+Body
+{
+	background:#eee;
+	margin:0px;
+	padding:0px;	
+	font-family:Calibri,Arial;
+}
+div
+{
+	padding:1px 10px;
+}
+.wrapper
+{
+	margin: 0px auto;
+	width:1000px;
+}
+
+#Content
+{
+	background: #fff;
+	border:1px solid #ccc;
+	border-top:none;
+}

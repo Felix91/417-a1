@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- Servlets ====================================================== -->
+	<!-- Main Website Servlets -->
 	<servlet>
-		<servlet-name>A1</servlet-name>
-		<servlet-class>com.UBC417.A1.A1Servlet</servlet-class>
+		<servlet-name>Home</servlet-name>
+		<servlet-class>com.UBC417.A1.HomeServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ReserveSeat</servlet-name>
+		<servlet-class>com.UBC417.A1.ReserveSeat</servlet-class>
+	</servlet>
+	
+	<!-- Helper Servlets -->
+	<servlet>
+		<servlet-name>FreeSeats</servlet-name>
+		<servlet-class>com.UBC417.A1.Helpers.FreeSeats</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteAll</servlet-name>
+		<servlet-class>com.UBC417.A1.Helpers.DeleteAll</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Prep</servlet-name>
+		<servlet-class>com.UBC417.A1.Helpers.PrepServlet</servlet-class>
+	</servlet>
+	
+	<!-- Test Servlets -->	
+	<servlet>
+		<servlet-name>TestSeatReservation</servlet-name>
+		<servlet-class>com.UBC417.A1.Tests.TestSeatReservation</servlet-class>
+	</servlet>
+
+	<!-- Mappings ================================================================-->
+	<!-- Main Website Mappings -->
 	<servlet-mapping>
-		<servlet-name>A1</servlet-name>
-		<url-pattern>/a1</url-pattern>
+		<servlet-name>Home</servlet-name>
+		<url-pattern>/Home</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ReserveSeat</servlet-name>
+		<url-pattern>/ReserveSeat</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Helper Mappings -->
+	<servlet-mapping>
+		<servlet-name>Prep</servlet-name>
+		<url-pattern>/Prep</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteAll</servlet-name>
+		<url-pattern>/DeleteAll</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FreeSeats</servlet-name>
+		<url-pattern>/FreeSeats</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Test Mappings -->
+	<servlet-mapping>
+		<servlet-name>TestSeatReservation</servlet-name>
+		<url-pattern>/SeatReservation</url-pattern>
+	</servlet-mapping>	
+	
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>Home</welcome-file>
 	</welcome-file-list>
  <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>
