@@ -4,3 +4,7 @@
 *.jar
 *.war
 *.ear
+
+# GAE generated files #
+war/WEB-INF/appengine-generated
+war/WEB-INF/classes/
