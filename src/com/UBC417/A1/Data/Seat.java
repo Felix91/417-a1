@@ -1,5 +1,7 @@
 package com.UBC417.A1.Data;
 
+import java.util.ConcurrentModificationException;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -53,22 +55,33 @@ public class Seat {
 	public static boolean ReserveSeat(Key FlightKey, String SeatID,
 			String FirstName, String LastName) throws EntityNotFoundException {
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-
-		Transaction tx = ds.beginTransaction();
-
-		try {
-			Entity e = ds.get(tx,
-					KeyFactory.createKey(FlightKey, "Seat", SeatID));
-
-			if (e.getProperty("PersonSitting") != null)
-				return false;
-
-			e.setProperty("PersonSitting", FirstName + " " + LastName);
-			ds.put(tx, e);
-
-			return true;
-		} finally {
-			tx.commit();
+		
+		int retries = 10;
+		while (true) {
+			Transaction tx = ds.beginTransaction();
+			try {
+				Entity e = ds.get(tx,
+						KeyFactory.createKey(FlightKey, "Seat", SeatID));
+	
+				if (e.getProperty("PersonSitting") != null)
+					return false;
+	
+				e.setProperty("PersonSitting", FirstName + " " + LastName);
+				ds.put(tx, e);
+	
+				tx.commit();
+				
+				return true;
+			} catch (ConcurrentModificationException e) {
+				if (retries == 0) {
+					throw e;
+				}
+				--retries;
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+			}
 		}
 	}
 }
