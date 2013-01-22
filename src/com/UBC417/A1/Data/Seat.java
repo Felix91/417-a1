@@ -56,6 +56,7 @@ public class Seat {
 			String FirstName, String LastName) throws EntityNotFoundException {
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
 		
+		// Problem 2: Retry failed transactions
 		int retries = 10;
 		while (true) {
 			Transaction tx = ds.beginTransaction();
