@@ -33,7 +33,7 @@ public class PrepServlet extends HttpServlet {
 		// Create seats for flight
 		for (int i = 1; i < 50; i++) {
 			for (int c = 'A'; c <= 'D'; c += 1) {
-				l.add(Seat.CreateSeat(String.format("%d%c", i, c), e.getKey(),
+				l.add(Seat.CreateSeat(String.format("%d%c", i, c), e.getKey().getName(),
 						false));
 			}
 		}

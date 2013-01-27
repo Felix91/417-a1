@@ -18,9 +18,15 @@ public class Seat {
 	// Create a seat on a specific flight,
 	// @store = true, when you want to commit entity to the datastore
 	// = false, when you want to commit entity later, like in a batch operation
-	public static Entity CreateSeat(String SeatID, Key FlightKey, boolean store) {
-		Entity e = new Entity("Seat", SeatID, FlightKey);
+	public static Entity CreateSeat(String SeatID, String FlightID, boolean store) {
+
+		// Problem 1: 	Datastore contention
+		//				Keep entity groups small by removing ancestor
+		// Seat's key will be a concatenated string of FlightID+SeatID
+		Entity e = new Entity("Seat", FlightID+SeatID);
 		e.setProperty("PersonSitting", null);
+		e.setProperty("FlightID", FlightID);
+		e.setProperty("SeatID", SeatID);
 
 		if (store) {
 			DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
@@ -46,13 +52,14 @@ public class Seat {
 	//Returns all free seats on a specific flight(FlightKey)
 	public static Iterable<Entity> GetFreeSeats(Key FlightKey) {
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-		Query q = new Query("Seat").setAncestor(FlightKey).addFilter(
-				"PersonSitting", FilterOperator.EQUAL, null);
+		Query q = new Query("Seat");
+		q.addFilter("PersonSitting", FilterOperator.EQUAL, null);
+		q.addFilter("FlightID", FilterOperator.EQUAL, FlightKey.getName());
 		return ds.prepare(q).asIterable();
 	}
 
-	//Reserves a specific seat(SeatID) on a specific flight(FlightKey)
-	public static boolean ReserveSeat(Key FlightKey, String SeatID,
+	//Reserves a specific seat(SeatID)
+	public static boolean ReserveSeat(String SeatID,
 			String FirstName, String LastName) throws EntityNotFoundException {
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
 		
@@ -62,7 +69,7 @@ public class Seat {
 			Transaction tx = ds.beginTransaction();
 			try {
 				Entity e = ds.get(tx,
-						KeyFactory.createKey(FlightKey, "Seat", SeatID));
+						KeyFactory.createKey("Seat", SeatID));
 	
 				if (e.getProperty("PersonSitting") != null)
 					return false;

@@ -33,7 +33,7 @@
 						<%for(Entity s : seats) { %>
 							<li>
 								<a href="/ReserveSeat?FlightName=<%=KeyFactory.keyToString( e.getKey() ) %>&SeatID=<%=s.getKey().getName() %>">
-									Seat : <%=s.getKey().getName() %></a>
+									Seat : <%=s.getProperty("SeatID") %></a>
 							</li>
 						<%}%>
 						</ul>
